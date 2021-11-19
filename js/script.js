@@ -2,8 +2,9 @@
 const btnNovaLista = document.getElementById("btnNovaLista")
 const cardNovaLista = document.getElementById("cardNovaLista")
 const formNovaLista = document.getElementById("novaLista")
+const divListas = document.getElementById("listas")
 
-const listas = []
+let listas = []
 //--------------funções-------------------------------------------
 btnNovaLista.addEventListener("click", function(){
     cardNovaLista.style.display = "block"
@@ -22,6 +23,9 @@ formNovaLista.addEventListener("submit", function(event){
         console.log(listas)
 
         inputTitulo.value = ""
+
+        window.localStorage.listas = JSON.stringify(listas)
+        renderList()
     }
     else{
         alert("Escreve alguma coisa nessa desgraça")
@@ -31,6 +35,18 @@ formNovaLista.addEventListener("reset", function(event){
     event.preventDefault()
     cardNovaLista.style.display = "none"
 })
-
-
-
+function renderList(){
+    listas = JSON.parse(window.localStorage.listas)
+ listas.map(lista => {
+     let h2Tag = document.createElement("H2")
+     h2Tag.innerHTML = lista.titulo
+     let divTag = document.createElement("DIV")
+     divTag.setAttribute("class", "card-lista")
+     divTag.appendChild(h2Tag)
+     divListas.appendChild(divTag)
+     console.log(divTag)
+})
+}
+if (window.localStorage.listas?.length > 0){
+ renderList()
+ }
